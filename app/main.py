@@ -22,12 +22,12 @@ def root():
     
     data = response.json()
 
-    if PUNCHLINE_KEY_NAME not in data:
+    if not data.get(PUNCHLINE_KEY_NAME):
         return f'{PUNCHLINE_KEY_NAME} is missing in API response', 424
 
-    if ID_KEY_NAME not in data:
+    if not data.get(ID_KEY_NAME):
         return f'{ID_KEY_NAME} is missing in API response', 424
-    
+
     result = {
         PUNCHLINE_KEY_NAME: data.get(PUNCHLINE_KEY_NAME),
         ID_KEY_NAME: data.get(ID_KEY_NAME)
