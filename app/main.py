@@ -15,7 +15,6 @@ ID_KEY_NAME = 'id'
 @app.get("/")
 def root():
     response = requests.get(OFFICIAL_JOKE_API_URL, verify=False, timeout=REQUEST_TIMEOUT)
-    print(response)
     try:
         response.raise_for_status()
     except requests.exceptions.RequestException as exc:
@@ -23,8 +22,11 @@ def root():
     
     data = response.json()
 
-    if PUNCHLINE_KEY_NAME not in data or ID_KEY_NAME not in data:
-        return f'{ID_KEY_NAME} / {PUNCHLINE_KEY_NAME} is missing in api response', 400
+    if PUNCHLINE_KEY_NAME not in data:
+        return f'{PUNCHLINE_KEY_NAME} is missing in API response', 424
+
+    if ID_KEY_NAME not in data:
+        return f'{ID_KEY_NAME} is missing in API response', 424
     
     result = {
         PUNCHLINE_KEY_NAME: data.get(PUNCHLINE_KEY_NAME),
